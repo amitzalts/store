@@ -36,46 +36,19 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.getMovies = exports.getOneMovie = exports.seatStatus = void 0;
-var moviesModel_1 = require("./moviesModel");
-var seatStatus;
-(function (seatStatus) {
-    seatStatus["FREE"] = "free";
-    seatStatus["TAKEN"] = "taken";
-})(seatStatus = exports.seatStatus || (exports.seatStatus = {}));
-exports.getOneMovie = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    return __generator(this, function (_a) {
-        try {
-            // const { movieId }= req.body
-            // const movie = await MovieModel.findById(movieId)
-            // const seats = await SeatModel.find({})
-            // const movieOrders = await OrderModel.find({movieId})
-            // for (const seat of seats){
-            //   if(movieOrders.some((order)=> order.seatIds.includes(seat._id as string))){
-            //     seat.status = seatStatus.TAKEN
-            //   }else{
-            //     seat.status = seatStatus.FREE
-            //   }
-            // }
-            // res.send({ movie, seats })
-        }
-        catch (error) {
-            console.error(error);
-            res.status(500).send({ error: error.message });
-        }
-        return [2 /*return*/];
-    });
-}); };
-exports.getMovies = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var movies, error_1;
+exports.getSeats = void 0;
+var seatsModel_1 = require("./seatsModel");
+//needed????????????????????
+exports.getSeats = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var seats, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, moviesModel_1["default"].find({})];
+                return [4 /*yield*/, seatsModel_1["default"].find({})];
             case 1:
-                movies = _a.sent();
-                res.send({ movies: movies });
+                seats = _a.sent();
+                res.send({ seats: seats });
                 return [3 /*break*/, 3];
             case 2:
                 error_1 = _a.sent();

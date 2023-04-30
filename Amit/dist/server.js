@@ -20,12 +20,14 @@ else {
 //getting data from public
 app.use(express_1["default"].json());
 //connecting to entities routes//
-var studentsRoute_1 = require("./API/students/studentsRoute");
-app.use('/api/students', studentsRoute_1["default"]);
-var coursesRoute_1 = require("./API/courses/coursesRoute");
-app.use('/api/courses', coursesRoute_1["default"]);
-var gradesRoute_1 = require("./API/grades/gradesRoute");
-app.use('/api/grades', gradesRoute_1["default"]);
+var usersRoute_1 = require("./API/users/usersRoute");
+app.use('/api/users', usersRoute_1["default"]);
+var moviesRoute_1 = require("./API/movies/moviesRoute");
+app.use('/api/movies', moviesRoute_1["default"]);
+var seatsRoute_1 = require("./API/seats/seatsRoute");
+app.use('/api/seats', seatsRoute_1["default"]);
+var ordersRoute_1 = require("./API/orders/ordersRoute");
+app.use('/api/orders', ordersRoute_1["default"]);
 //static file
 app.use(express_1["default"].static("./public"));
 app.listen(3000, function () {

@@ -21,14 +21,17 @@ if (uri) {
 app.use(express.json());
 
 //connecting to entities routes//
-import studentsRouter from './API/students/studentsRoute';
-app.use('/api/students', studentsRouter);
+import usersRouter from './API/users/usersRoute';
+app.use('/api/users', usersRouter);
 
-import coursesRouter from './API/courses/coursesRoute';
-app.use('/api/courses', coursesRouter);
+import moviesRouter from './API/movies/moviesRoute';
+app.use('/api/movies', moviesRouter);
 
-import gradesRouter from './API/grades/gradesRoute';
-app.use('/api/grades', gradesRouter);
+import seatsRouter from './API/seats/seatsRoute';
+app.use('/api/seats', seatsRouter);
+
+import ordersRouter from './API/orders/ordersRoute';
+app.use('/api/orders', ordersRouter);
 
 
 //static file

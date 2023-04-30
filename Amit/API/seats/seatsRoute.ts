@@ -2,15 +2,10 @@ import express from "express";
 const router = express.Router();
 
 import {
-  addGrade,
-  updateGrade,
-  deleteGrade,
-  
-} from "./gradesControl";
+  getSeats, 
+} from "./seatsControl"
 
 router
-  .post("/add-grade", addGrade)
-  .patch("/update-grade", updateGrade)
-  .delete("/delete-grade", deleteGrade);
+  .get("/get-seats", getSeats)
 
 export default router;

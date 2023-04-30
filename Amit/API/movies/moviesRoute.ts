@@ -1,18 +1,16 @@
-import express from "express";
-const router = express.Router();
+import express from "express"
+const router = express.Router()
 
 import {
-  addCourse,
-  updateCourse,
-  deleteCourse,
-  getStudentGradesInCourse,
-  
-} from "./coursesControl";
+  getOneMovie,
+  getMovies,
+
+} from "./moviesControl"
 
 router
-  .post("/add-course", addCourse)
-  .patch("/update-course", updateCourse)
-  .delete("/delete-course", deleteCourse)
-  .post("/get-student-grades-in-course", getStudentGradesInCourse);
+  .get("/get-one-movie", getOneMovie)
+  .get("/get-movies", getMovies)
+  
 
 export default router;
+
