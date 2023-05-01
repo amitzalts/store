@@ -5,5 +5,6 @@ var router = express_1["default"].Router();
 var usersControl_1 = require("./usersControl");
 router
     .post("/create-user", usersControl_1.createUser)
-    .get("/get-user", usersControl_1.getUser);
+    .put("/get-user", usersControl_1.getUser)
+    .post("/verify-user-login", usersControl_1.verifyUserLogin);
 exports["default"] = router;

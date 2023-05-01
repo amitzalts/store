@@ -6,7 +6,8 @@ var moviesModel_1 = require("../movies/moviesModel");
 var seatsModel_1 = require("../seats/seatsModel");
 exports.UserSchema = new mongoose_1.Schema({
     name: String,
-    password: String
+    password: String,
+    loggedIn: Boolean
 });
 exports.UserMovieSchema = new mongoose_1.Schema({
     user: exports.UserSchema,

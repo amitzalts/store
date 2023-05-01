@@ -6,11 +6,13 @@ import { SeatSchema } from "../seats/seatsModel";
 export interface User{
     name: string;
     password: string;
+    loggedIn: boolean;
 }
 
 export const UserSchema = new Schema({
     name: String,
     password: String,
+    loggedIn: Boolean,
 });
 
 

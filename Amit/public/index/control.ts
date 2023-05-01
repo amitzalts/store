@@ -1,16 +1,24 @@
 function loggedInUser() {
     try { 
-        
-        fetch("/api/users/get-user")
+        const userId = "1"
+
+        fetch("/api/users/get-user", {
+                        method: "PUT",
+                        headers: {
+                            Accept: "application/json",
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify(userId),
+                    }) 
             .then((res) => res.json())
             .then(({ user }) => {
                 try {
                     if (!user){
-                        const newUrl = `../register`;
-                        window.location.replace(newUrl);
+                        const newUrl = `../register`
+                        window.location.replace(newUrl)
                     }else {
-                        console.log("username = ", user.name)
-                        //renderLoggedInUserName;
+                        
+                        renderLoggedInUserName(user.name)
                     }
                 } catch (error) {
                     console.error(error);

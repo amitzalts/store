@@ -6,8 +6,10 @@ export const createUser = async (req:any, res:any) => {
       if(!name) throw new Error("name not found")
       if(!password) throw new Error("password not found")
 
-      const userDB = await UserModel.create({name, password})
-
+      const loggedIn:boolean = false
+      
+      const userDB = await UserModel.create({name, password, loggedIn})
+      
       console.log(userDB);
       
       res.status(201).send({ ok: true })
@@ -21,7 +23,10 @@ export const createUser = async (req:any, res:any) => {
 export const getUser = async (req:any, res:any) => {
     try {
       const { userId } = req.body
-      if(!userId) throw new Error("user id not found")
+
+      console.log("userId", userId);
+
+      if(!userId) throw new Error("user id not found on req")
 
       const user = await UserModel.findById(userId)
   
@@ -30,8 +35,27 @@ export const getUser = async (req:any, res:any) => {
       console.error(error);
       res.status(500).send({ error: error.message })
     }
-  }
+}
   
+
+export const verifyUserLogin = async (req:any, res:any) => {
+  try {
+    const { name, password } = req.body
+    if(!name) throw new Error("name not found")
+    if(!password) throw new Error("password not found")
+    
+    const user = await UserModel.findOne({name, password})
+    
+    console.log("verifyUserLogin", user);
+    
+    res.status(201).send({ ok: true, user })
+  } catch (error: any) {
+    console.error(error);
+    res.status(500).send({ error: error.message })
+  }
+};
+  
+
 
 
 

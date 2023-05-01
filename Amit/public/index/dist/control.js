@@ -1,6 +1,14 @@
 function loggedInUser() {
     try {
-        fetch("/api/users/get-user")
+        var userId = "1";
+        fetch("/api/users/get-user", {
+            method: "PUT",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(userId)
+        })
             .then(function (res) { return res.json(); })
             .then(function (_a) {
             var user = _a.user;
@@ -10,8 +18,7 @@ function loggedInUser() {
                     window.location.replace(newUrl);
                 }
                 else {
-                    console.log("username = ", user.name);
-                    //renderLoggedInUserName;
+                    renderLoggedInUserName(user.name);
                 }
             }
             catch (error) {
