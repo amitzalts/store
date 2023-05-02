@@ -5,5 +5,6 @@ var router = express_1["default"].Router();
 var seatsControl_1 = require("./seatsControl");
 router
     .get("/get-seats", seatsControl_1.getSeats)
-    .post("/pick-one-seat", seatsControl_1.pickOneSeat);
+    .post("/pick-one-seat", seatsControl_1.pickOneSeat)
+    .get("/get-picked-seats", seatsControl_1.getPickedSeats);
 exports["default"] = router;

@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.pickOneSeat = exports.getSeats = void 0;
+exports.getPickedSeats = exports.pickOneSeat = exports.getSeats = void 0;
 var seatsModel_1 = require("./seatsModel");
 exports.getSeats = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var seats, error_1;
@@ -65,13 +65,11 @@ exports.pickOneSeat = function (req, res) { return __awaiter(void 0, void 0, voi
             case 0:
                 _a.trys.push([0, 2, , 3]);
                 seat = req.body.seat;
-                console.log("seat", seat);
                 return [4 /*yield*/, seatsModel_1["default"].findOne({ rowNumber: seat.rowNumber, seatNumber: seat.seatNumber })];
             case 1:
                 seatDB = _a.sent();
                 if (!seatDB)
                     throw new Error("seat DB not found");
-                console.log("seatDB", seatDB);
                 if (seatDB.picked === true) {
                     seatDB.picked = false;
                 }
@@ -85,6 +83,26 @@ exports.pickOneSeat = function (req, res) { return __awaiter(void 0, void 0, voi
                 error_2 = _a.sent();
                 console.error(error_2);
                 res.status(500).send({ error: error_2.message });
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); };
+exports.getPickedSeats = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var seats, error_3;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, seatsModel_1["default"].find({ picked: true })];
+            case 1:
+                seats = _a.sent();
+                res.send({ seats: seats });
+                return [3 /*break*/, 3];
+            case 2:
+                error_3 = _a.sent();
+                console.error(error_3);
+                res.status(500).send({ error: error_3.message });
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
         }

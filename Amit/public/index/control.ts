@@ -22,8 +22,6 @@ function loggedInUser() {
 
 function movieCookie(movieId: string){
     try {
-         console.log("movieid", movieId)
-        
          const movie: any = { movieId }
  
          fetch("/api/movies/enter-movie", {

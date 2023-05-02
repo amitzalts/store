@@ -35,3 +35,11 @@ function renderPickedSeat(seat) {
         console.error(error);
     }
 }
+function renderTakenSeats(seats) {
+    try {
+        console.log(seats);
+    }
+    catch (error) {
+        console.error(error);
+    }
+}

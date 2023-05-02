@@ -25,7 +25,6 @@ function loggedInUser() {
 }
 function movieCookie(movieId) {
     try {
-        console.log("movieid", movieId);
         var movie = { movieId: movieId };
         fetch("/api/movies/enter-movie", {
             method: "POST",
