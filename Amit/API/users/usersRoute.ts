@@ -4,13 +4,13 @@ const router = express.Router()
 import {
   createUser,
   getUser,
-  verifyUserLogin,
+  login,
 } from "./usersControl"
 
 router
   .post("/create-user", createUser)
-  .put("/get-user", getUser)
-  .post("/verify-user-login", verifyUserLogin)
+  .get("/get-user", getUser)
+  .post("/login", login)
   
   
 export default router

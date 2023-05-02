@@ -9,6 +9,25 @@ function renderLoggedInUserName(userName) {
         console.error(error);
     }
 }
+function renderMovies() {
+    try {
+        fetch("/api/movies/get-movies")
+            .then(function (res) { return res.json(); })
+            .then(function (_a) {
+            var movies = _a.movies;
+            var moviesRoot = document.querySelector("#moviesRoot");
+            if (!moviesRoot)
+                throw new Error("movies root not found on DOM");
+            var html = movies.map(function (movie) {
+                return "\n          <button onclick=\"movieCookie('" + movie._id + "')\">" + movie.name + "</button>\n          ";
+            }).join(" ");
+            moviesRoot.innerHTML = html;
+        });
+    }
+    catch (error) {
+        console.error(error);
+    }
+}
 //   function renderStudents(students: Student[]) {
 //     try {
 //         if (!students) throw new Error("No students");

@@ -1,8 +1,17 @@
-import express from "express";
-const app = express();
-import mongoose, { Schema } from "mongoose";
-import * as dotenv from "dotenv";
-dotenv.config();
+//express & mongoose//
+import express from "express"
+const app = express()
+import mongoose, { Schema } from "mongoose"
+
+//env//
+import * as dotenv from "dotenv"
+dotenv.config()
+
+//cookies//
+import cookieParser from 'cookie-parser'
+app.use(cookieParser())
+
+
 
 //connecting DB//
 const uri: string | undefined = process.env.MONGODB_URI;

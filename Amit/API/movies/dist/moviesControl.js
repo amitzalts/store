@@ -36,38 +36,44 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.getMovies = exports.getOneMovie = exports.seatStatus = void 0;
+exports.enterMovie = exports.getMovies = exports.getOneMovie = exports.seatStatus = void 0;
 var moviesModel_1 = require("./moviesModel");
+var jwt_simple_1 = require("jwt-simple");
+var secret = process.env.JWT_SECRET;
 var seatStatus;
 (function (seatStatus) {
     seatStatus["FREE"] = "free";
     seatStatus["TAKEN"] = "taken";
 })(seatStatus = exports.seatStatus || (exports.seatStatus = {}));
 exports.getOneMovie = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var movie, decoded, movieId, movieDB, error_1;
     return __generator(this, function (_a) {
-        try {
-            // const { movieId }= req.body
-            // const movie = await MovieModel.findById(movieId)
-            // const seats = await SeatModel.find({})
-            // const movieOrders = await OrderModel.find({movieId})
-            // for (const seat of seats){
-            //   if(movieOrders.some((order)=> order.seatIds.includes(seat._id as string))){
-            //     seat.status = seatStatus.TAKEN
-            //   }else{
-            //     seat.status = seatStatus.FREE
-            //   }
-            // }
-            // res.send({ movie, seats })
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                movie = req.cookies.movie;
+                if (!secret)
+                    throw new Error("No secret");
+                if (!movie)
+                    throw new Error("No movie found");
+                decoded = jwt_simple_1["default"].decode(movie, secret);
+                movieId = decoded.movieId;
+                return [4 /*yield*/, moviesModel_1["default"].findById(movieId)];
+            case 1:
+                movieDB = _a.sent();
+                res.send({ ok: true, movie: movieDB });
+                return [3 /*break*/, 3];
+            case 2:
+                error_1 = _a.sent();
+                console.error(error_1);
+                res.status(500).send({ error: error_1.message });
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
         }
-        catch (error) {
-            console.error(error);
-            res.status(500).send({ error: error.message });
-        }
-        return [2 /*return*/];
     });
 }); };
 exports.getMovies = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var movies, error_1;
+    var movies, error_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -78,9 +84,38 @@ exports.getMovies = function (req, res) { return __awaiter(void 0, void 0, void 
                 res.send({ movies: movies });
                 return [3 /*break*/, 3];
             case 2:
-                error_1 = _a.sent();
-                console.error(error_1);
-                res.status(500).send({ error: error_1.message });
+                error_2 = _a.sent();
+                console.error(error_2);
+                res.status(500).send({ error: error_2.message });
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); };
+exports.enterMovie = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var movieId, movie, token, error_3;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                movieId = req.body.movieId;
+                if (!movieId)
+                    throw new Error("movie Id not found");
+                return [4 /*yield*/, moviesModel_1["default"].findById(movieId)];
+            case 1:
+                movie = _a.sent();
+                if (!movie)
+                    throw new Error("user not found");
+                if (!secret)
+                    throw new Error("Missing jwt secret");
+                token = jwt_simple_1["default"].encode({ movieId: movie._id, role: "public" }, secret);
+                res.cookie("movie", token, { maxAge: 5000000000000000, httpOnly: true });
+                res.status(201).send({ ok: true });
+                return [3 /*break*/, 3];
+            case 2:
+                error_3 = _a.sent();
+                console.error(error_3);
+                res.status(500).send({ error: error_3.message });
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
         }

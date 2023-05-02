@@ -36,8 +36,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.verifyUserLogin = exports.getUser = exports.createUser = void 0;
+exports.login = exports.getUser = exports.createUser = void 0;
 var usersModel_1 = require("./usersModel");
+var jwt_simple_1 = require("jwt-simple");
+var secret = process.env.JWT_SECRET;
 exports.createUser = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var _a, name, password, loggedIn, userDB, error_1;
     return __generator(this, function (_b) {
@@ -53,7 +55,6 @@ exports.createUser = function (req, res) { return __awaiter(void 0, void 0, void
                 return [4 /*yield*/, usersModel_1["default"].create({ name: name, password: password, loggedIn: loggedIn })];
             case 1:
                 userDB = _b.sent();
-                console.log(userDB);
                 res.status(201).send({ ok: true });
                 return [3 /*break*/, 3];
             case 2:
@@ -66,19 +67,22 @@ exports.createUser = function (req, res) { return __awaiter(void 0, void 0, void
     });
 }); };
 exports.getUser = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var userId, user, error_2;
+    var user, decoded, userId, userDB, error_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                userId = req.body.userId;
-                console.log("userId", userId);
-                if (!userId)
-                    throw new Error("user id not found on req");
+                user = req.cookies.user;
+                if (!secret)
+                    throw new Error("No secret");
+                if (!user)
+                    throw new Error("No user found");
+                decoded = jwt_simple_1["default"].decode(user, secret);
+                userId = decoded.userId;
                 return [4 /*yield*/, usersModel_1["default"].findById(userId)];
             case 1:
-                user = _a.sent();
-                res.send({ user: user });
+                userDB = _a.sent();
+                res.send({ ok: true, user: userDB });
                 return [3 /*break*/, 3];
             case 2:
                 error_2 = _a.sent();
@@ -89,8 +93,8 @@ exports.getUser = function (req, res) { return __awaiter(void 0, void 0, void 0,
         }
     });
 }); };
-exports.verifyUserLogin = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, name, password, user, error_3;
+exports.login = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var _a, name, password, user, token, error_3;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
@@ -103,8 +107,14 @@ exports.verifyUserLogin = function (req, res) { return __awaiter(void 0, void 0,
                 return [4 /*yield*/, usersModel_1["default"].findOne({ name: name, password: password })];
             case 1:
                 user = _b.sent();
-                console.log("verifyUserLogin", user);
-                res.status(201).send({ ok: true, user: user });
+                if (!user)
+                    throw new Error("Username or password are inncorect");
+                if (!secret)
+                    throw new Error("Missing jwt secret");
+                user.loggedIn = true;
+                token = jwt_simple_1["default"].encode({ userId: user._id, role: "public" }, secret);
+                res.cookie("user", token, { maxAge: 5000000000000000, httpOnly: true });
+                res.status(201).send({ ok: true });
                 return [3 /*break*/, 3];
             case 2:
                 error_3 = _b.sent();

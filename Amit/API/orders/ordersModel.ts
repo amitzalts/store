@@ -1,16 +1,19 @@
 import mongoose, { Schema } from "mongoose";
+import { Seat, SeatSchema } from "../seats/seatsModel";
+import { Movie, MovieSchema } from "../movies/moviesModel";
+import { User, UserSchema } from "../users/usersModel";
 
 
 export interface Order{
-    userId: string;
-    movieId: string;
-    seatIds: string[];
+    user: User;
+    movie: Movie;
+    seat: Seat[];
 }
 
 export const OrderSchema = new Schema({
-    userId: String,
-    movieId: String,
-    seatIds: [String],
+    user: UserSchema,
+    movie: MovieSchema,
+    seat: [SeatSchema],
 });
 
 

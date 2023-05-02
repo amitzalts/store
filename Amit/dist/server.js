@@ -1,10 +1,15 @@
 "use strict";
 exports.__esModule = true;
+//express & mongoose//
 var express_1 = require("express");
 var app = express_1["default"]();
 var mongoose_1 = require("mongoose");
+//env//
 var dotenv = require("dotenv");
 dotenv.config();
+//cookies//
+var cookie_parser_1 = require("cookie-parser");
+app.use(cookie_parser_1["default"]());
 //connecting DB//
 var uri = process.env.MONGODB_URI;
 if (uri) {

@@ -1,4 +1,4 @@
-function handleUserLogin(ev) {
+function handleLogin(ev) {
     try {
         ev.preventDefault();
         var name = ev.target.elements.name.value;
@@ -7,25 +7,20 @@ function handleUserLogin(ev) {
             throw new Error("No name found");
         if (!password)
             throw new Error("No Password found");
-        var userForm_1 = { name: name, password: password };
-        fetch("/api/users/verify-user-login", {
+        var newUser = { name: name, password: password };
+        fetch("/api/users/login", {
             method: "POST",
             headers: {
                 Accept: "application/json",
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(userForm_1)
+            body: JSON.stringify(newUser)
         })
             .then(function (res) { return res.json(); })
-            .then(function (_a) {
-            var user = _a.user;
-            if ((user.name === userForm_1.name) && (user.password === userForm_1.password)) {
-                user.loggedIn = true;
-                redirectToHomePage(user);
-            }
-            else {
-                alert("password or name are invalid");
-            }
+            .then(function (data) {
+            console.log("data", data);
+            console.log("redirecting");
+            redirectToHomePage();
         })["catch"](function (error) {
             console.error(error);
         });
@@ -35,7 +30,7 @@ function handleUserLogin(ev) {
         console.error(error);
     }
 }
-function redirectToHomePage(user) {
+function redirectToHomePage() {
     try {
         var newUrl = "../index";
         window.location.replace(newUrl);
@@ -44,29 +39,3 @@ function redirectToHomePage(user) {
         console.error(error);
     }
 }
-// function handleAddStudent(ev) {
-//   try {
-//       ev.preventDefault();
-//       const name = ev.target.elements.name.value;
-//       if (!name) throw new Error("No name on form");
-//       const newStudent: any = { name };
-//       fetch("/api/students/add-student", {
-//           method: "POST",
-//           headers: {
-//               Accept: "application/json",
-//               "Content-Type": "application/json",
-//           },
-//           body: JSON.stringify(newStudent),
-//       })
-//           .then((res) => res.json())
-//           .then(({ students }) => {
-//               renderStudents(students);
-//           })
-//           .catch((error) => {
-//               console.error(error);
-//           });
-//       ev.target.reset();
-//   } catch (error) {
-//       console.error(error);
-//   }
-// }

@@ -1,3 +1,5 @@
+
+
 function renderLoggedInUserName(userName){
     try {
       const userNameRoot: HTMLDivElement | null = document.querySelector("#userNameRoot")
@@ -9,7 +11,25 @@ function renderLoggedInUserName(userName){
     }
 }
 
+function renderMovies(){
+  try {
+    fetch("/api/movies/get-movies") 
+      .then((res) => res.json())
+      .then(({ movies }) => {
+        const moviesRoot: HTMLDivElement | null = document.querySelector("#moviesRoot")
+        if(!moviesRoot) throw new Error("movies root not found on DOM")
+        const html = movies.map((movie)=>{
+          return`
+          <button onclick="movieCookie('${movie._id}')">${movie.name}</button>
+          `
+        }).join(" ")
 
+        moviesRoot.innerHTML = html
+    });
+  } catch (error) {
+    console.error(error)
+  }
+}
 
 //   function renderStudents(students: Student[]) {
 //     try {
