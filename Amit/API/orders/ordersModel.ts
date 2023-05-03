@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 import { Seat, SeatSchema } from "../seats/seatsModel";
-import { Movie, MovieSchema } from "../movies/moviesModel";
+import { Movie, MovieSchema, MovieSeatSchema } from "../movies/moviesModel";
 import { User, UserSchema } from "../users/usersModel";
 
 
@@ -12,8 +12,7 @@ export interface Order{
 
 export const OrderSchema = new Schema({
     user: UserSchema,
-    movie: MovieSchema,
-    seat: [SeatSchema],
+    seatsInMovie: [MovieSeatSchema],
 });
 
 

@@ -1,13 +1,25 @@
-// function renderSeats(){
-//     try {
-//      const seatsRoot: HTMLDivElement | null = document.querySelector("#seatsContainerRoot")
-//      if(!seatsRoot) throw new Error("seats root not found")
-//      seatsRoot.innerHTML=`
-//      `   
-//     } catch (error) {
-//         console.error(error)
-//     }
-// }
+function renderSeats(movieSeats) {
+    try {
+        console.log(movieSeats);
+        movieSeats.map(function (movieSeat) {
+            var seatRoot = document.querySelector("#root0" + movieSeat.seat.rowNumber + "-0" + movieSeat.seat.seatNumber);
+            if (!seatRoot)
+                throw new Error("seatRoot not found");
+            if (movieSeat.seatStatus === "free") {
+                seatRoot.style.backgroundColor = "seagreen";
+            }
+            else if (movieSeat.seatStatus === "picked") {
+                seatRoot.style.backgroundColor = "yellow";
+            }
+            else if (movieSeat.seatStatus === "taken") {
+                seatRoot.style.backgroundColor = "grey";
+            }
+        });
+    }
+    catch (error) {
+        console.error(error);
+    }
+}
 function renderMovieName(movieName) {
     try {
         var movieNameRoot = document.querySelector("#movieNameRoot");
@@ -19,12 +31,12 @@ function renderMovieName(movieName) {
         console.error(error);
     }
 }
-function renderPickedSeat(seat) {
+function renderPickedSeat(movieSeat) {
     try {
-        var seatRoot = document.querySelector("#root0" + seat.rowNumber + "-0" + seat.seatNumber);
+        var seatRoot = document.querySelector("#root0" + movieSeat.seat.rowNumber + "-0" + movieSeat.seat.seatNumber);
         if (!seatRoot)
             throw new Error("seatRoot not found");
-        if (seat.picked === true) {
+        if (movieSeat.seatStatus === "picked") {
             seatRoot.style.backgroundColor = "yellow";
         }
         else {
@@ -35,9 +47,14 @@ function renderPickedSeat(seat) {
         console.error(error);
     }
 }
-function renderTakenSeats(seats) {
+function renderTakenSeats(movieSeats) {
     try {
-        console.log(seats);
+        movieSeats.map(function (movieSeat) {
+            var seatRoot = document.querySelector("#root0" + movieSeat.seat.rowNumber + "-0" + movieSeat.seat.seatNumber);
+            if (!seatRoot)
+                throw new Error("seatRoot not found");
+            seatRoot.style.backgroundColor = "grey";
+        });
     }
     catch (error) {
         console.error(error);

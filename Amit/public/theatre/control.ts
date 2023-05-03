@@ -1,31 +1,33 @@
-import { Seat } from "../../API/seats/seatsModel"
 
-
-
-
-function handleSeatsPicking(_rowNumber:string, _seatNumber:string){
+function handleSeatsPicking(_rowNumber: string, _seatNumber: string) {
     try {
-        const seat:any = {
+        const seat: any = {
             rowNumber: _rowNumber,
             seatNumber: _seatNumber,
         }
 
-        fetch("/api/seats/pick-one-seat", {
-            method: "POST",
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({seat}),
-          })
+        fetch("/api/movies/get-one-movie")
             .then((res) => res.json())
-            .then(({seatDB}) => {
-              renderPickedSeat(seatDB)
+            .then(({ movie }) => {
+                fetch("/api/seats/pick-one-seat", {
+                    method: "POST",
+                    headers: {
+                        Accept: "application/json",
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ seat, movie }),
+                })
+                    .then((res) => res.json())
+                    .then(({ movieSeat }) => {
+                        renderPickedSeat(movieSeat)
+                    })
+                    .catch((error) => {
+                        console.error(error)
+                    })
             })
-            .catch((error) => {
-              console.error(error)
-            })
-    
+
+
+
     } catch (error) {
         console.error(error)
     }
@@ -33,58 +35,74 @@ function handleSeatsPicking(_rowNumber:string, _seatNumber:string){
 
 function currentMovie() {
     try {
-        fetch("/api/movies/get-one-movie") 
+        fetch("/api/movies/get-one-movie")
             .then((res) => res.json())
             .then(({ movie }) => {
                 renderMovieName(movie.name)
-            });
+                getMovieSeats(movie)
+            })
     } catch (error) {
         console.error(error)
         return undefined
     }
 }
 
-async function handleAddOrder(){
+async function handleAddOrder() {
     try {
         //user//
         const userResponse = await fetch('/api/users/get-user')
         const userData = await userResponse.json()
-        const {user} = userData
-        console.log("user", user)
-        if(!user) throw new Error("user not found")
-
-        //movie//
-        const movieResponse = await  fetch('/api/movies/get-one-movie')
-        const movieData = await movieResponse.json()
-        const {movie} = movieData
-        console.log("movie", movie)
-        if(!movie) throw new Error("movie not found")
+        const { user } = userData
+        if (!user) throw new Error("user not found")
 
         //seats//
         const seatsResponse = await fetch('/api/seats/get-picked-seats')
         const seatsData = await seatsResponse.json()
-        const {seats} = seatsData
-        console.log("seats", seats)
-        if(!seats) throw new Error("seats not found")
-       
-        const order = {user, movie, seats}
+        const { movieSeats } = seatsData
+        if (!movieSeats) throw new Error("seats not found")
+
+        const order = { user, movieSeats }
 
         fetch("/api/orders/create-order", {
             method: "POST",
             headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
+                Accept: "application/json",
+                "Content-Type": "application/json",
             },
             body: JSON.stringify(order),
-          })
+        })
             .then((res) => res.json())
             .then((data) => {
-              console.log(data)
-              renderTakenSeats(seats)
+                console.log(data)
+                renderTakenSeats(movieSeats)
             })
             .catch((error) => {
-              console.error(error)
-            });
+                console.error(error)
+            })
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+function getMovieSeats(movie){
+    try {
+        console.log("movie in getMovieSeats", movie )
+        fetch("/api/seats/get-movie-seats", {
+            method: "POST",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({movie}),
+        })
+            .then((res) => res.json())
+            .then(({movieSeats}) => {
+                renderSeats(movieSeats)
+            })
+            .catch((error) => {
+                console.error(error)
+            })
+         
     } catch (error) {
         console.error(error)  
     }

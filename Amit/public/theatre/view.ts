@@ -1,16 +1,22 @@
-// function renderSeats(){
-//     try {
-//      const seatsRoot: HTMLDivElement | null = document.querySelector("#seatsContainerRoot")
-//      if(!seatsRoot) throw new Error("seats root not found")
+function renderSeats(movieSeats) {
+  try {
+    console.log(movieSeats)
+    movieSeats.map((movieSeat) => {
+      const seatRoot: HTMLDivElement | null = document.querySelector(`#root0${movieSeat.seat.rowNumber}-0${movieSeat.seat.seatNumber}`)
+      if (!seatRoot) throw new Error("seatRoot not found")
+      if (movieSeat.seatStatus === "free") {
+        seatRoot.style.backgroundColor = "seagreen"
+      } else if (movieSeat.seatStatus === "picked") {
+        seatRoot.style.backgroundColor = "yellow"
+      } else if (movieSeat.seatStatus === "taken") {
+        seatRoot.style.backgroundColor = "grey"
+      }
+    })
 
-//      seatsRoot.innerHTML=`
-
-//      `   
-
-//     } catch (error) {
-//         console.error(error)
-//     }
-// }
+  } catch (error) {
+    console.error(error)
+  }
+}
 
 function renderMovieName(movieName) {
   try {
@@ -23,12 +29,13 @@ function renderMovieName(movieName) {
   }
 }
 
-function renderPickedSeat(seat) {
+function renderPickedSeat(movieSeat) {
   try {
-    const seatRoot: HTMLDivElement | null = document.querySelector(`#root0${seat.rowNumber}-0${seat.seatNumber}`)
+
+    const seatRoot: HTMLDivElement | null = document.querySelector(`#root0${movieSeat.seat.rowNumber}-0${movieSeat.seat.seatNumber}`)
     if (!seatRoot) throw new Error("seatRoot not found")
 
-    if (seat.picked === true) {
+    if (movieSeat.seatStatus === "picked") {
       seatRoot.style.backgroundColor = "yellow"
     } else {
       seatRoot.style.backgroundColor = "seagreen"
@@ -39,11 +46,15 @@ function renderPickedSeat(seat) {
   }
 }
 
-function renderTakenSeats(seats) {
+function renderTakenSeats(movieSeats) {
   try {
-    console.log(seats)
+    movieSeats.map((movieSeat) => {
+      const seatRoot: HTMLDivElement | null = document.querySelector(`#root0${movieSeat.seat.rowNumber}-0${movieSeat.seat.seatNumber}`)
+      if (!seatRoot) throw new Error("seatRoot not found")
+      seatRoot.style.backgroundColor = "grey"
+    })
+
   } catch (error) {
     console.error(error)
   }
-
 }

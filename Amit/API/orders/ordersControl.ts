@@ -2,8 +2,8 @@ import OrderModel from "./ordersModel";
 
 export const createOrder = async (req:any, res:any) => {
     try {
-      const { user, movie, seats } = req.body;
-      const orderDB = await OrderModel.create({user, movie, seats});
+      const { user, movieSeats } = req.body;
+      const orderDB = await OrderModel.create({user, seatsInMovie: movieSeats});
       
       res.status(201).send({ ok: true, orderDB });
     } catch (error: any) {
@@ -11,8 +11,3 @@ export const createOrder = async (req:any, res:any) => {
       res.status(500).send({ error: error.message });
     }
   };
-
-
-
-
-

@@ -39,13 +39,13 @@ exports.__esModule = true;
 exports.createOrder = void 0;
 var ordersModel_1 = require("./ordersModel");
 exports.createOrder = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, user, movie, seats, orderDB, error_1;
+    var _a, user, movieSeats, orderDB, error_1;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
                 _b.trys.push([0, 2, , 3]);
-                _a = req.body, user = _a.user, movie = _a.movie, seats = _a.seats;
-                return [4 /*yield*/, ordersModel_1["default"].create({ user: user, movie: movie, seats: seats })];
+                _a = req.body, user = _a.user, movieSeats = _a.movieSeats;
+                return [4 /*yield*/, ordersModel_1["default"].create({ user: user, seatsInMovie: movieSeats })];
             case 1:
                 orderDB = _b.sent();
                 res.status(201).send({ ok: true, orderDB: orderDB });

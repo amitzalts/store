@@ -1,4 +1,3 @@
-"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -35,27 +34,31 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-exports.__esModule = true;
 function handleSeatsPicking(_rowNumber, _seatNumber) {
     try {
-        var seat = {
+        var seat_1 = {
             rowNumber: _rowNumber,
             seatNumber: _seatNumber
         };
-        fetch("/api/seats/pick-one-seat", {
-            method: "POST",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ seat: seat })
-        })
+        fetch("/api/movies/get-one-movie")
             .then(function (res) { return res.json(); })
             .then(function (_a) {
-            var seatDB = _a.seatDB;
-            renderPickedSeat(seatDB);
-        })["catch"](function (error) {
-            console.error(error);
+            var movie = _a.movie;
+            fetch("/api/seats/pick-one-seat", {
+                method: "POST",
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ seat: seat_1, movie: movie })
+            })
+                .then(function (res) { return res.json(); })
+                .then(function (_a) {
+                var movieSeat = _a.movieSeat;
+                renderPickedSeat(movieSeat);
+            })["catch"](function (error) {
+                console.error(error);
+            });
         });
     }
     catch (error) {
@@ -69,6 +72,7 @@ function currentMovie() {
             .then(function (_a) {
             var movie = _a.movie;
             renderMovieName(movie.name);
+            getMovieSeats(movie);
         });
     }
     catch (error) {
@@ -78,11 +82,11 @@ function currentMovie() {
 }
 function handleAddOrder() {
     return __awaiter(this, void 0, void 0, function () {
-        var userResponse, userData, user, movieResponse, movieData, movie, seatsResponse, seatsData, seats_1, order, error_1;
+        var userResponse, userData, user, seatsResponse, seatsData, movieSeats_1, order, error_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    _a.trys.push([0, 7, , 8]);
+                    _a.trys.push([0, 5, , 6]);
                     return [4 /*yield*/, fetch('/api/users/get-user')];
                 case 1:
                     userResponse = _a.sent();
@@ -90,30 +94,18 @@ function handleAddOrder() {
                 case 2:
                     userData = _a.sent();
                     user = userData.user;
-                    console.log("user", user);
                     if (!user)
                         throw new Error("user not found");
-                    return [4 /*yield*/, fetch('/api/movies/get-one-movie')];
-                case 3:
-                    movieResponse = _a.sent();
-                    return [4 /*yield*/, movieResponse.json()];
-                case 4:
-                    movieData = _a.sent();
-                    movie = movieData.movie;
-                    console.log("movie", movie);
-                    if (!movie)
-                        throw new Error("movie not found");
                     return [4 /*yield*/, fetch('/api/seats/get-picked-seats')];
-                case 5:
+                case 3:
                     seatsResponse = _a.sent();
                     return [4 /*yield*/, seatsResponse.json()];
-                case 6:
+                case 4:
                     seatsData = _a.sent();
-                    seats_1 = seatsData.seats;
-                    console.log("seats", seats_1);
-                    if (!seats_1)
+                    movieSeats_1 = seatsData.movieSeats;
+                    if (!movieSeats_1)
                         throw new Error("seats not found");
-                    order = { user: user, movie: movie, seats: seats_1 };
+                    order = { user: user, movieSeats: movieSeats_1 };
                     fetch("/api/orders/create-order", {
                         method: "POST",
                         headers: {
@@ -125,17 +117,40 @@ function handleAddOrder() {
                         .then(function (res) { return res.json(); })
                         .then(function (data) {
                         console.log(data);
-                        renderTakenSeats(seats_1);
+                        renderTakenSeats(movieSeats_1);
                     })["catch"](function (error) {
                         console.error(error);
                     });
-                    return [3 /*break*/, 8];
-                case 7:
+                    return [3 /*break*/, 6];
+                case 5:
                     error_1 = _a.sent();
                     console.error(error_1);
-                    return [3 /*break*/, 8];
-                case 8: return [2 /*return*/];
+                    return [3 /*break*/, 6];
+                case 6: return [2 /*return*/];
             }
         });
     });
+}
+function getMovieSeats(movie) {
+    try {
+        console.log("movie in getMovieSeats", movie);
+        fetch("/api/seats/get-movie-seats", {
+            method: "POST",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ movie: movie })
+        })
+            .then(function (res) { return res.json(); })
+            .then(function (_a) {
+            var movieSeats = _a.movieSeats;
+            renderSeats(movieSeats);
+        })["catch"](function (error) {
+            console.error(error);
+        });
+    }
+    catch (error) {
+        console.error(error);
+    }
 }
